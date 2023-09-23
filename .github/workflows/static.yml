@@ -1,5 +1,4 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy static content and run Spring Boot
 
 on:
   # Runs on pushes targeting the default branch
@@ -22,7 +21,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
+  # Single deploy job since we're deploying and running Spring Boot
   deploy:
     environment:
       name: github-pages
@@ -31,13 +30,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
-          # Upload entire repository
-          path: '.'
+            # Upload entire repository
+            path: .
+      # Add a step to build your Spring Boot application
+      - name: Build Spring Boot Application
+        run: |
+          # Replace this with the actual command to build your Spring Boot app
+          mvn clean install
+        working-directory: path/to/your/spring-boot-app
+
+      # Add a step to run your Spring Boot application
+      - name: Run Spring Boot Application
+        run: |
+          # Replace this with the actual command to run your Spring Boot app
+          java -jar target/ecolens-<version>.jar
+        working-directory: C:/Desktop/Programming/ecolensForked/ecolens/src/main/java/com/pennhacks/ecolens
+
+
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v
